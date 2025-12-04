@@ -1,4 +1,17 @@
-﻿const { useState, useEffect, useMemo } = React;
+const { useState, useEffect, useMemo } = React;
+
+const FREQUENCY_DATA = [
+  { method: 'Cera Quente/Fria', growth: 'lento', days: 30 },
+  { method: 'Cera Quente/Fria', growth: 'medio', days: 25 },
+  { method: 'Cera Quente/Fria', growth: 'rapido', days: 20 },
+  { method: 'Fotodepilação/IPL', growth: 'lento', days: 45 },
+  { method: 'Fotodepilação/IPL', growth: 'medio', days: 30 },
+  { method: 'Fotodepilação/IPL', growth: 'rapido', days: 25 },
+  { method: 'Linha/Fio', growth: 'lento', days: 20 },
+  { method: 'Linha/Fio', growth: 'medio', days: 15 },
+  { method: 'Linha/Fio', growth: 'rapido', days: 10 },
+  { method: 'Micropigmentação (Ajuste)', growth: 'padrao', days: 30 * 6 }, 
+];
 
 const tips = [
   { title: 'Tipos de pele', desc: 'Seca pede ceramidas + óleos leves; oleosa prefere gel calmante; mista combina texturas.' },
@@ -67,6 +80,7 @@ function Nav({ route, onNavigate }) {
   const links = [
     { label: 'Início', path: '/' },
     { label: 'Autoajuda', path: '/autoajuda' },
+    { label: 'Frequência', path: '/frequencia' },
     { label: 'Marca', path: '/marca' },
     { label: 'Apresentação', path: '/documentacao' }
   ];
@@ -75,7 +89,7 @@ function Nav({ route, onNavigate }) {
       <div className="brand">
         <div className="brand-mark">DG</div>
         <div>
-          <h1>Depyla Glow</h1>
+          <h1>DEPILAÇÃO, SOBRANCELHA, ESTÉTICA, CÍLIOS E FOTODEPILAÇÃO</h1>
           <div className="tagline">Depilação inteligente e gentil</div>
         </div>
       </div>
@@ -210,6 +224,86 @@ function AutoHelp() {
               <p className="muted" style={{ margin: 0 }}>{f.a}</p>
             </div>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+function FrequencyCalc() {
+  const [form, setForm] = useState({ method: 'Cera Quente/Fria', growth: 'medio', lastDate: new Date().toISOString().substring(0, 10) });
+  const [returnDate, setReturnDate] = useState(null);
+  
+  const update = (key, value) => setForm(prev => ({ ...prev, [key]: value }));
+
+  useEffect(() => {
+    const { method, growth, lastDate } = form;
+    
+    // 1. Encontra o intervalo de dias com base no método e crescimento do pelo
+    const intervalRule = FREQUENCY_DATA.find(d => d.method === method && d.growth === growth);
+    const days = intervalRule ? intervalRule.days : 25; // Padrão 25 dias
+
+    // 2. Calcula a nova data de retorno
+    const last = new Date(lastDate);
+    if (!isNaN(last)) {
+      const nextDate = new Date(last);
+      nextDate.setDate(last.getDate() + days); // Adiciona os dias de intervalo
+      
+      // Formata a data de retorno (ex: 20 de Dezembro de 2025)
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      setReturnDate(nextDate.toLocaleDateString('pt-BR', options));
+    }
+  }, [form]);
+
+return (
+    <section className="stack">
+      <div className="panel">
+        <h3>Calculadora de Frequência de Retorno</h3>
+        <p>Preencha os dados e descubra a data ideal para o seu próximo agendamento, garantindo o melhor resultado e conforto.</p>
+        <div className="grid two">
+          <div className="card">
+            <strong>Seu Histórico</strong>
+            <div className="form">
+              <div>
+                <label>Método utilizado</label>
+                <select value={form.method} onChange={e => update('method', e.target.value)}>
+                  <option value="Cera Quente/Fria">Cera Quente/Fria</option>
+                  <option value="Fotodepilação/IPL">Fotodepilação/IPL</option>
+                  <option value="Linha/Fio">Linha/Fio (Facial)</option>
+                  <option value="Micropigmentação (Ajuste)">Micropigmentação (Ajuste)</option>
+                </select>
+              </div>
+              <div>
+                <label>Velocidade de crescimento</label>
+                <select value={form.growth} onChange={e => update('growth', e.target.value)}>
+                  <option value="rapido">Rápido (Pelos grossos)</option>
+                  <option value="medio">Médio (Padrão)</option>
+                  <option value="lento">Lento (Pelos finos)</option>
+                </select>
+              </div>
+              <div>
+                <label>Data da última sessão</label>
+                <input type="date" value={form.lastDate} onChange={e => update('lastDate', e.target.value)} />
+              </div>
+            </div>
+          </div>
+          <div className="routine">
+            <div className="pill">Retorno Sugerido</div>
+            {returnDate ? (
+              <div>
+  <p>A data ideal para a sua próxima sessão é:</p>
+  <h1 style={{ color: 'var(--accent)', fontSize: '1.8rem', margin: '0 0 10px' }}>
+    {returnDate}
+  </h1>
+  <p>Agendar na data correta garante a eficácia total...</p>
+  <button className="btn btn-primary" onClick={() => window.location.hash = '/documentacao'}>
+    Agendar Agora
+  </button>
+</div>
+
+            ) : (
+              <p>Preencha a data da última sessão para calcular seu retorno ideal.</p>
+            )}
+          </div>
         </div>
       </div>
     </section>
@@ -388,6 +482,8 @@ function DocsPage() {
   );
 }
 
+
+
 function Layout({ route, onNavigate, children }) {
   return (
     <div className="page">
@@ -405,6 +501,7 @@ function App() {
   const routes = {
     '/': <Home />,
     '/autoajuda': <AutoHelp />,
+    '/frequencia': <FrequencyCalc />,
     '/marca': <About />,
     '/documentacao': <DocsPage />
   };
