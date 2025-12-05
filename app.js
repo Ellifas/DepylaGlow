@@ -89,7 +89,7 @@ function Nav({ route, onNavigate }) {
       <div className="brand">
         <div className="brand-mark">DG</div>
         <div>
-          <h1>DEPILAÇÃO, SOBRANCELHA, ESTÉTICA, CÍLIOS E FOTODEPILAÇÃO</h1>
+          <h1>Depyla Glow</h1>
           <div className="tagline">Depilação inteligente e gentil</div>
         </div>
       </div>
@@ -238,17 +238,14 @@ function FrequencyCalc() {
   useEffect(() => {
     const { method, growth, lastDate } = form;
     
-    // 1. Encontra o intervalo de dias com base no método e crescimento do pelo
     const intervalRule = FREQUENCY_DATA.find(d => d.method === method && d.growth === growth);
-    const days = intervalRule ? intervalRule.days : 25; // Padrão 25 dias
-
-    // 2. Calcula a nova data de retorno
+    const days = intervalRule ? intervalRule.days : 25; 
     const last = new Date(lastDate);
     if (!isNaN(last)) {
       const nextDate = new Date(last);
-      nextDate.setDate(last.getDate() + days); // Adiciona os dias de intervalo
+      nextDate.setDate(last.getDate() + days);
       
-      // Formata a data de retorno (ex: 20 de Dezembro de 2025)
+    
       const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
       setReturnDate(nextDate.toLocaleDateString('pt-BR', options));
     }
@@ -310,10 +307,75 @@ return (
   );
 }
 
+function ServicesSection() {
+  const [zoomedImg, setZoomedImg] = useState(null);
+
+  const services = [
+    { title: "Depilação Cera Morna", desc: "Conforto e técnica exclusiva para uma pele lisa e saudável.", img: "./img/servico-1.jpg" },
+    { title: "Design de Sobrancelha", desc: "Visagismo aplicado para realçar a harmonia do seu olhar.", img: "./img/servico-2.jpg" },
+    { title: "Extensão de Cílios", desc: "Volume e curvatura na medida certa para o seu estilo.", img: "./img/servico-3.jpg" },
+    { title: "Fotodepilação Avançada", desc: "Tecnologia de luz pulsada para redução duradoura dos pelos.", img: "./img/servico-4.jpg" }
+  ];
+
+  const galleryImages = [
+    "./img/servico-5.jpg",
+    "./img/servico-6.jpg",
+    "./img/servico-7.jpg",
+    "./img/servico-8.jpg",
+    "./img/servico-9.jpg"
+  ];
+
+  return (
+    <section className="services-section">
+      <div className="services-overlay"></div>
+      <div className="services-content">
+        
+        <h2 className="section-title">Experiência Depyla Glow</h2>
+
+        {}
+        <div className="services-grid">
+          {services.map((s, i) => (
+            <div className="service-card" key={i}>
+              <img src={s.img} alt={s.title} className="leaf-shape" />
+              <h4>{s.title}</h4>
+              <p>{s.desc}</p>
+              <a href="#/documentacao" className="btn-outline">Saiba mais</a>
+            </div>
+          ))}
+        </div>
+
+        {}
+        <div className="gallery-strip">
+          {galleryImages.map((img, i) => (
+            <div 
+              className="gallery-item" 
+              key={i} 
+              onClick={() => setZoomedImg(img)} 
+            >
+              <img src={img} alt="Clique para ampliar" />
+            </div>
+          ))}
+        </div>
+
+      </div>
+
+      {}
+      {zoomedImg && (
+        <div className="lightbox-overlay" onClick={() => setZoomedImg(null)}>
+          <img src={zoomedImg} className="lightbox-img" alt="Zoom" />
+        </div>
+      )}
+
+    </section>
+  );
+}
+
 function Home() {
   return (
     <section className="stack">
       <Hero />
+      
+      {}
       <div className="panel">
         <h3>Por que Depyla Glow?</h3>
         <p>Mapeamos sua pele, ajustamos temperatura, textura e pós-cuidado para evitar ardor e pelos encravados.</p>
@@ -324,6 +386,7 @@ function Home() {
           <span className="badge">Suporte 24h</span>
         </div>
       </div>
+      
       <div className="panel">
         <h3>Linha de produtos</h3>
         <div className="products">
@@ -337,14 +400,20 @@ function Home() {
           ))}
         </div>
       </div>
+
+      {}
       <div className="cta-bar">
         <h3>Pronta para depilar sem ardor?</h3>
         <p>Reserve agora seu horário ou fale com nosso time clínico no chat.</p>
         <div className="hero-cta">
-          <button className="btn btn-ghost" style={{ color: '#ff4f36' }}>Abrir chat</button>
-          <button className="btn btn-primary" style={{ background: '#fff', color: '#ff6347' }} onClick={() => window.location.hash = '/autoajuda'}>Agendar consulta</button>
+          <button className="btn btn-ghost" style={{ color: '#059669' }}>Abrir chat</button>
+          <button className="btn btn-primary" style={{ background: '#fff', color: '#059669' }} onClick={() => window.location.hash = '/autoajuda'}>Agendar consulta</button>
         </div>
       </div>
+
+      {}
+      <ServicesSection />
+
     </section>
   );
 }
@@ -482,6 +551,61 @@ function DocsPage() {
   );
 }
 
+function Footer() {
+  const IconFace = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>;
+  const IconWhats = () => <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>;
+  const IconMail = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>;
+  const IconInsta = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>;
+
+  return (
+    <footer className="main-footer">
+      <div className="footer-content">
+        <div className="footer-grid">
+          <div className="footer-left">
+            <h2 className="footer-headline">
+              Entre em <br/>
+              <span style={{color: '#fff'}}>contato</span> <br/>
+              com a gente
+            </h2>
+            <p className="footer-subtext">Estamos prontos para te atender.</p>
+            <div className="footer-social-row">
+              <a href="mailto:contato@dpylar.com" className="social-btn" title="E-mail"><IconMail /></a>
+              <a href="https://wa.me/5583999999999" className="social-btn" title="WhatsApp"><IconWhats /></a>
+              <a href="https://instagram.com/dpylar" className="social-btn" title="Instagram"><IconInsta /></a>
+              <a href="https://facebook.com/dpylar" className="social-btn" title="Facebook"><IconFace /></a>
+            </div>
+          </div>
+          <div className="footer-right">
+            <div className="map-container">
+              <iframe 
+                src="https://maps.google.com/maps?q=Av.+Plínio+Lemos+195F,+Malvinas+Campina+Grande+-+PB&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+                width="100%" 
+                height="100%" 
+                style={{border:0}} 
+                allowFullScreen="" 
+                loading="lazy"
+                title="Mapa Depyla Glow"
+              ></iframe>
+              <div className="map-overlay-label">
+                <strong>Depyla Glow Estética</strong>
+                <small>Ver no mapa ampliado</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="footer-divider"></div>
+        <div className="footer-bottom">
+          <span>© 2025 Depyla Glow Estética - Todos os direitos reservados.</span>
+          <div className="legal-links">
+            <a href="#">Política de Privacidade</a>
+            <span>•</span>
+            <a href="#">Termos de Uso</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
 
 
 function Layout({ route, onNavigate, children }) {
@@ -489,12 +613,12 @@ function Layout({ route, onNavigate, children }) {
     <div className="page">
       <div className="bg-shape"></div>
       <Nav route={route} onNavigate={onNavigate} />
-      <main>{children}</main>
-      <div className="footer">Depyla Glow • Cuidado integral para sua pele • Suporte 24/7</div>
+      <main style={{ minHeight: '60vh' }}>{children}</main>
+      <Footer /> {}
     </div>
   );
 }
-
+ 
 function App() {
   const route = useHashRoute();
   const navigate = (path) => { window.location.hash = path; };
