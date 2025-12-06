@@ -3,7 +3,9 @@
 Aplicação single-page em React (CDN + Babel) para uma marca fictícia de depilação, com rotas hash (#/) para landing, autoajuda, página da marca e links de documentação. Design mobile-first inspirado em DepylAction com foco em pele e pós-cuidado.
 
 ## Como rodar
-- Abra `index.html` em um navegador moderno. Não requer build ou servidor.
+- Valide se tem o Node instalado em sua máquina
+- `npm install`
+- Execute o comando `npx http-server` para criação de um server local
 
 ## Estrutura
 - `index.html`: carrega React CDN, Babel standalone e monta o app em `app.js`.
